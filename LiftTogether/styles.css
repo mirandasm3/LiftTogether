@@ -1,0 +1,73 @@
+body {
+    background: url('background.png') no-repeat center center fixed;
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+.login-container {
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 40px; /* Aumenta el relleno para más espacio interior */
+    border-radius: 10px;
+    width: 400px; /* Aumenta el ancho del contenedor */
+    text-align: center;
+}
+
+.logo {
+    width: 150px; /* Aumenta el tamaño del logo */
+    height: 150px; /* Aumenta el tamaño del logo */
+    background: url('logo-background.png') no-repeat center center;
+    background-size: contain;
+    border-radius: 50%;
+    margin: 0 auto 30px; /* Aumenta el margen inferior para separar del resto */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 30px; /* Aumenta el tamaño del texto */
+    font-weight: bold;
+    color: #ff8800;
+}
+
+input[type="text"], input[type="password"], input[type="email"], input[type="date"] {
+    width: 100%;
+    padding: 15px; /* Aumenta el tamaño del padding */
+    margin: 15px 0; /* Aumenta el margen para más espacio entre los campos */
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 18px; /* Aumenta el tamaño de la fuente */
+    box-sizing: border-box;
+}
+
+.login-button {
+    width: 100%;
+    padding: 15px; /* Aumenta el tamaño del botón */
+    background-color: #0044cc;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 18px; /* Aumenta el tamaño de la fuente del botón */
+    margin-top: 20px; /* Agrega un margen superior */
+}
+
+.login-button:hover {
+    background-color: #003399;
+}
+
+.create-account {
+    margin-top: 20px; /* Aumenta el espacio superior */
+    font-size: 16px; /* Aumenta el tamaño de la fuente */
+}
+
+.create-account a {
+    color: #0044cc;
+    text-decoration: none;
+}
+
+.create-account a:hover {
+    text-decoration: underline;
+}

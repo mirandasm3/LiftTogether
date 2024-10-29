@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LiftTogether - Iniciar Sesión</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="login-container">
+        <div class="logo">LiftTogether</div>
+        <form id="loginForm">
+            <input type="email" id="loginEmail" placeholder="Usuario" required>
+            <input type="password" id="loginPassword" placeholder="Contraseña" required>
+            <button type="button" class="login-button" onclick="iniciarSesion()">Iniciar Sesión</button>
+        </form>
+        <div class="create-account">
+            <a href="crear_cuenta.html">Crear cuenta</a>
+        </div>
+    </div>
+
+    <script>
+        // Simulación de base de datos de usuarios registrados (mismo arreglo de "crear_cuenta.html" para consistencia)
+        const usuariosRegistrados = [
+            { correo: 'usuario1@example.com', contraseña: 'password1', nombre: 'Juan Perez', fechaNacimiento: '1990-01-01', tipo: 'cliente' },
+            { correo: 'usuario2@example.com', contraseña: 'password2', nombre: 'Maria Lopez', fechaNacimiento: '1985-05-15', tipo: 'vendedor' }
+        ];
+
+        function iniciarSesion() {
+            const correo = document.getElementById('loginEmail').value.trim();
+            const contraseña = document.getElementById('loginPassword').value;
+
+            const usuario = usuariosRegistrados.find(
+                u => u.correo === correo && u.contraseña === contraseña
+            );
+
+            if (!usuario) {
+                alert('No se encontró una cuenta asociada con esas credenciales.');
+                return;
+            }
+
+            // Redirigir según el tipo de usuario
+            if (usuario.tipo === 'cliente') {
+                window.location.href = 'pagina_cliente.html';
+            } else if (usuario.tipo === 'vendedor') {
+                window.location.href = 'pagina_vendedor.html';
+            }
+        }
+    </script>
+</body>
+</html>
