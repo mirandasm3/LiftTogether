@@ -45,7 +45,7 @@ input[type="text"], input[type="password"], input[type="email"], input[type="dat
 .login-button {
     width: 100%;
     padding: 15px; /* Aumenta el tamaño del botón */
-    background-color: #0044cc;
+    background-color: #505473;
     color: white;
     border: none;
     border-radius: 5px;

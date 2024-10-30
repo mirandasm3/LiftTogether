@@ -8,7 +8,7 @@
 </head>
 <body>
     <div class="login-container">
-        <div class="logo">LiftTogether</div>
+        <div class="logo"></div>
         <form id="loginForm">
             <input type="email" id="loginEmail" placeholder="Usuario" required>
             <input type="password" id="loginPassword" placeholder="Contraseña" required>
@@ -41,9 +41,9 @@
 
             // Redirigir según el tipo de usuario
             if (usuario.tipo === 'cliente') {
-                window.location.href = 'pagina_cliente.html';
+                window.location.href = 'inicio_cliente.html';
             } else if (usuario.tipo === 'vendedor') {
-                window.location.href = 'pagina_vendedor.html';
+                window.location.href = 'inicio_vendedor.html';
             }
         }
     </script>
