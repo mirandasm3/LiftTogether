@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página de Inicio del Vendedor</title>
+    <link rel="stylesheet" href="stylesHome.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <!-- Barra de navegación superior -->
+    <header class="navbar">
+        <a href="inicio_vendedor.html" class="logo">LiftTogether.com</a>
+        <div class="search-bar">
+            <select id="categoriesDropdown">
+                <option value="">Todas las categorías</option>
+                <option value="electronica">Electrónica</option>
+                <option value="ropa">Ropa</option>
+                <option value="hogar">Hogar</option>
+            </select>
+            <input type="text" id="searchInput" placeholder="Buscar productos">
+            <button onclick="buscarProducto()">🔍</button>
+        </div>
+
+        <a href="planes.html" class="premium"><i class="fas fa-crown"></i> Hazte Premium</a>
+
+        <div class="user-options" onmouseover="mostrarMenuCuenta()" onmouseout="ocultarMenuCuenta()">
+            <span>Hola <span id="userFirstName">Usuario</span></span>
+            <span>Cuenta</span>
+            <div id="accountMenu" class="account-menu">
+                <a href="mi_cuenta_vendedor.html">Mi cuenta</a>
+                <a href="mis_productos.html">Mis productos</a>
+                <a href="index.html" onclick="cerrarSesion()">Cerrar sesión</a>
+            </div>
+        </div>
+    </header>
+    <div class="sub-navbar">
+        <a href="vender.html">Vender</a>
+        <a href="ayuda.html">Ayuda</a>
+    </div>
+
+    <!-- Sección de pago -->
+    <main>
+        <div class="payment-container">
+            <h2>Paga en un punto de pago OXXO para asegurar tu stock</h2>
+            <p>Muestra el código de barras al pagar o menciona estos datos</p>
+            <div class="barcode">
+                <svg id="barcode"></svg>
+            </div>
+            <p>Tipo de pago: Servicios de Mercado Libre</p>
+            <p>Código de pago: <span id="codigoPago">123456789012</span></p>
+            <p>Monto a pagar: $20</p>
+            <button onclick="descargarDatos()">Descargar estos datos</button>
+        </div>
+        
+    </main>
+
+    <script>
+        function toggleMenuCuenta() {
+            const menu = document.getElementById('accountMenu');
+            menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+        }
+
+        function cerrarSesion() {
+            alert('Sesión cerrada');
+            window.location.href = 'index.html';
+        }
+
+        function descargarCodigo() {
+            alert("Datos de pago descargados.");
+            // Aquí se puede implementar la descarga del archivo o imagen del código de barras
+        }
+    </script>
+    
+    <script>
+        // Genera un código de pago aleatorio
+        function generarCodigoPago() {
+            // Genera un número aleatorio de 12 dígitos
+            return Math.floor(Math.random() * 1000000000000); // Número de 12 dígitos
+        }
+
+        // Genera el código de barras cuando la página carga
+        document.addEventListener("DOMContentLoaded", function () {
+            // Generar código de pago aleatorio
+            const codigoPago = generarCodigoPago();
+            document.getElementById("codigoPago").innerText = codigoPago;  // Actualiza el código de pago en el HTML
+    
+            // Genera el código de barras en el elemento <svg> con id="barcode"
+            JsBarcode("#barcode", codigoPago, {
+                format: "CODE128",
+                lineColor: "#000",
+                width: 2,
+                height: 80,
+                displayValue: true
+            });
+        });
+    
+        // Función para descargar los datos en formato de texto
+        function descargarDatos() {
+            const codigo = document.getElementById("codigoPago").innerText;
+            const datos = ` 
+                Tipo de pago: Servicios de Mercado Libre
+                Código de pago: ${codigo}
+                Monto a pagar: $20
+            `;
+            const blob = new Blob([datos], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = "datos_pago.txt";
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+    </script>
+    
+</body>
+</html>

@@ -84,6 +84,7 @@ body {
     display: inline-block;
     cursor: pointer;
     text-align: right;
+    margin-right: 10px;
 }
 
 .user-options span {
@@ -92,7 +93,7 @@ body {
 }
 
 .account-menu {
-    display: none;
+    display: none !important;
     position: absolute;
     right: 0;
     background-color: #ffffff;
@@ -150,6 +151,7 @@ body {
     font-size: 24px;
     color: #ffa41c;
     text-decoration: none;
+    margin-left: 20px;
 }
 
 /* Sección del banner principal */
@@ -263,4 +265,179 @@ body {
 .stat-box p {
     font-size: 24px;
     font-weight: bold;
+}
+
+
+/* Resumen de la cuenta */
+.account-summary {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    width: 30%;
+    margin-right: 20px;
+}
+
+.account-summary h2 {
+    color: #2a2a72;
+}
+
+.account-summary hr {
+    margin: 10px 0;
+    border-color: #ddd;
+}
+
+/* Panel de opciones */
+.dashboard {
+    display: flex;
+    padding: 20px;
+}
+
+.options-panel {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    width: 70%;
+}
+
+.option-box {
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s;
+    text-align: center;
+}
+
+.option-box:hover {
+    transform: translateY(-5px);
+}
+
+.option-box a {
+    color: #2a2a72;
+    text-decoration: none;
+}
+
+.option-box h3 {
+    font-size: 18px;
+    margin-bottom: 8px;
+}
+
+.option-box p {
+    color: #666;
+    font-size: 14px;
+}
+
+/* Sección de planes de suscripción */
+.plans-container {
+    display: flex;
+    justify-content: space-around;
+    padding: 20px;
+    gap: 20px;
+}
+
+.plan-card {
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    padding: 20px;
+    width: 30%;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.plan-card:hover {
+    transform: translateY(-5px);
+}
+
+.plan-card h3 {
+    color: #2a2a72;
+    font-size: 22px;
+    margin-bottom: 10px;
+}
+
+.plan-card p {
+    font-size: 24px;
+    font-weight: bold;
+    color: #ffa41c;
+    margin-bottom: 15px;
+}
+
+.plan-card ul {
+    list-style-type: none;
+    text-align: left;
+    padding: 0;
+    color: #555;
+    margin-bottom: 20px;
+}
+
+.plan-card ul li {
+    margin: 8px 0;
+    font-size: 16px;
+}
+
+.plan-card button {
+    background-color: #ffa41c;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.plan-card button:hover {
+    background-color: #2a2a72;
+    color: #ffa41c;
+}
+
+/* Sección de pago del plan */
+.payment-container {
+    max-width: 500px;
+    margin: 50px auto;
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.payment-container h2 {
+    font-size: 24px;
+    color: #2a2a72;
+    margin-bottom: 20px;
+}
+
+.payment-container p {
+    font-size: 16px;
+    color: #555;
+    margin-bottom: 15px;
+}
+
+.payment-container .barcode {
+    margin: 20px 0;
+}
+
+.payment-container .barcode img {
+    width: 100%;
+    max-width: 300px;
+}
+
+.payment-container button {
+    background-color: #ffa41c;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.payment-container button:hover {
+    background-color: #2a2a72;
+    color: #ffa41c;
 }

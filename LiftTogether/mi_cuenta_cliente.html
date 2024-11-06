@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LiftTogether - Inicio del Cliente</title>
+    <link rel="stylesheet" href="stylesHome.css">
+</head>
+<body>
+    <!-- Barra de navegación superior -->
+    <header class="navbar">
+        <a href="inicio_cliente.html" class="logo">LiftTogether.com</a>
+        <div class="search-bar">
+            <select id="categoriesDropdown">
+                <option value="">Todas las categorías</option>
+                <option value="electronica">Electrónica</option>
+                <option value="ropa">Ropa</option>
+                <option value="hogar">Hogar</option>
+            </select>
+            <input type="text" id="searchInput" placeholder="Buscar productos">
+            <button onclick="buscarProducto()">🔍</button>
+        </div>
+        
+        <div class="user-options" onmouseover="mostrarMenuCuenta()" onmouseout="ocultarMenuCuenta()">
+            <span>Hola <span id="userFirstName">Usuario</span></span>
+            <span>Cuenta</span>
+            <div id="accountMenu" class="account-menu">
+                <a href="mi_cuenta.html">Mi cuenta</a>
+                <a href="mis_pedidos.html">Mis pedidos</a>
+                <a href="index.html" onclick="cerrarSesion()">Cerrar sesión</a>
+            </div>
+        </div>
+        <a href="carrito.html" class="cart-icon">🛒</a>
+    </header>
+
+    <!-- Barra de navegación inferior -->
+    <div class="sub-navbar">
+        <button id="sellButton">Vender</button>
+        <a href="ayuda.html">Ayuda</a>
+    </div>
+
+    <!-- Sección principal de contenido -->
+    <main>
+        <div class="dashboard">
+            <!-- Resumen de la cuenta -->
+            <div class="account-summary">
+                <h2>Bienvenido,</h2>
+                <p id="userSummary">Usuario Pérez</p>
+                <hr>
+                <p>Correo: usuario@mail.com</p>
+                <p>Fecha de nacimiento: 10/05/1995</p>
+                <p>Tipo de usuario: Cliente</p>
+            </div>
+
+            <!-- Panel de opciones -->
+            <div class="options-panel">
+                <div class="option-box">
+                    <a href="mis_pedidos.html">
+                        <h3>Mis pedidos</h3>
+                        <p>Rastrear paquetes, devolver pedidos o comprar algo de nuevo</p>
+                    </a>
+                </div>
+                <div class="option-box">
+                    <a href="seguridad.html">
+                        <h3>Seguridad</h3>
+                        <p>Configurar seguridad de cuenta</p>
+                    </a>
+                </div>
+                <div class="option-box">
+                    <a href="mis_direcciones.html">
+                        <h3>Mis direcciones</h3>
+                        <p>Administrar tus direcciones de entrega</p>
+                    </a>
+                </div>
+                <div class="option-box">
+                    <a href="servicio_cliente.html">
+                        <h3>Servicio al cliente</h3>
+                        <p>Ayuda y soporte para clientes</p>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        function mostrarMenuCuenta() {
+            document.getElementById('accountMenu').style.display = 'block';
+        }
+
+        function ocultarMenuCuenta() {
+            document.getElementById('accountMenu').style.display = 'none';
+        }
+
+        function buscarProducto() {
+            const searchInput = document.getElementById('searchInput').value.trim();
+            const category = document.getElementById('categoriesDropdown').value;
+            if (searchInput) {
+                alert(`Buscando "${searchInput}" en categoría "${category || 'todas'}"...`);
+            }
+        }
+
+        function cerrarSesion() {
+            alert('Sesión cerrada');
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+</html>

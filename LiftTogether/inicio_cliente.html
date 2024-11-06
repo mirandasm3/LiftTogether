@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LiftTogether - Inicio</title>
+    <title>LiftTogether - Inicio del Cliente</title>
     <link rel="stylesheet" href="stylesHome.css">
 </head>
 <body>
@@ -20,6 +20,7 @@
             <input type="text" id="searchInput" placeholder="Buscar productos">
             <button onclick="buscarProducto()">🔍</button>
         </div>
+        
         <div class="user-options" onmouseover="mostrarMenuCuenta()" onmouseout="ocultarMenuCuenta()">
             <span>Hola <span id="userFirstName">Usuario</span></span>
             <span>Cuenta</span>
@@ -52,7 +53,7 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             function mostrarMenuCuenta() {
-                document.getElementById('accountMenu').style.display = 'block';
+            document.getElementById('accountMenu').style.display = 'block';
             }
 
             function ocultarMenuCuenta() {
