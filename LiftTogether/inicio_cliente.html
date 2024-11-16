@@ -21,11 +21,11 @@
             <button onclick="buscarProducto()">🔍</button>
         </div>
         
-        <div class="user-options" onmouseover="mostrarMenuCuenta()" onmouseout="ocultarMenuCuenta()">
+        <div class="user-options" id="userOptions">
             <span>Hola <span id="userFirstName">Usuario</span></span>
             <span>Cuenta</span>
             <div id="accountMenu" class="account-menu">
-                <a href="mi_cuenta.html">Mi cuenta</a>
+                <a href="mi_cuenta_Cliente.html">Mi cuenta</a>
                 <a href="mis_pedidos.html">Mis pedidos</a>
                 <a href="index.html" onclick="cerrarSesion()">Cerrar sesión</a>
             </div>
@@ -52,14 +52,25 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            function mostrarMenuCuenta() {
-            document.getElementById('accountMenu').style.display = 'block';
-            }
+            const userOptions = document.getElementById("userOptions");
+        const accountMenu = document.getElementById("accountMenu");
 
-            function ocultarMenuCuenta() {
-                document.getElementById('accountMenu').style.display = 'none';
-            }
+        userOptions.addEventListener("mouseenter", function() {
+            accountMenu.style.display = "block";
+        });
 
+        userOptions.addEventListener("mouseleave", function() {
+            accountMenu.style.display = "none";
+        });
+
+        // Si deseas que el menú también se despliegue con un clic
+        userOptions.addEventListener("click", function() {
+            if (accountMenu.style.display === "none" || accountMenu.style.display === "") {
+                accountMenu.style.display = "block";
+            } else {
+                accountMenu.style.display = "none";
+            }
+        });
             function buscarProducto() {
                 const searchInput = document.getElementById('searchInput').value.trim();
                 const category = document.getElementById('categoriesDropdown').value;

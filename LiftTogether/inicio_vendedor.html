@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
-    <!-- Barra de navegación superior -->
+
     <header class="navbar">
         <a href="inicio_vendedor.html" class="logo">LiftTogether.com</a>
         <div class="search-bar">
@@ -21,10 +21,10 @@
             <input type="text" id="searchInput" placeholder="Buscar productos">
             <button onclick="buscarProducto()">🔍</button>
         </div>
-
+        
         <a href="planes.html" class="premium"><i class="fas fa-crown"></i> Hazte Premium</a>
 
-        <div class="user-options" onmouseover="mostrarMenuCuenta()" onmouseout="ocultarMenuCuenta()">
+        <div class="user-options" id="userOptions">
             <span>Hola <span id="userFirstName">Usuario</span></span>
             <span>Cuenta</span>
             <div id="accountMenu" class="account-menu">
@@ -33,6 +33,8 @@
                 <a href="index.html" onclick="cerrarSesion()">Cerrar sesión</a>
             </div>
         </div>
+    </header>
+
     </header>
     <div class="sub-navbar">
         <a href="vender.html">Vender</a>
@@ -81,13 +83,25 @@
     <script src="script.js"></script>
 
     <script>
-        function mostrarMenuCuenta() {
-            document.getElementById('accountMenu').style.display = 'block';
-        }
+        const userOptions = document.getElementById("userOptions");
+        const accountMenu = document.getElementById("accountMenu");
 
-        function ocultarMenuCuenta() {
-            document.getElementById('accountMenu').style.display = 'none';
-        }
+        userOptions.addEventListener("mouseenter", function() {
+            accountMenu.style.display = "block";
+        });
+
+        userOptions.addEventListener("mouseleave", function() {
+            accountMenu.style.display = "none";
+        });
+
+        // Si deseas que el menú también se despliegue con un clic
+        userOptions.addEventListener("click", function() {
+            if (accountMenu.style.display === "none" || accountMenu.style.display === "") {
+                accountMenu.style.display = "block";
+            } else {
+                accountMenu.style.display = "none";
+            }
+        });
 
         function buscarProducto() {
             const searchInput = document.getElementById('searchInput').value.trim();

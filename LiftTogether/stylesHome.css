@@ -93,7 +93,7 @@ body {
 }
 
 .account-menu {
-    display: none !important;
+    display: none;
     position: absolute;
     right: 0;
     background-color: #ffffff;
