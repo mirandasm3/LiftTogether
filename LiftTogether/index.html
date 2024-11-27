@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LiftTogether - Iniciar Sesión</title>
     <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
     <div class="login-container">
@@ -20,33 +21,60 @@
     </div>
 
     <script>
-        // Simulación de base de datos de usuarios registrados (mismo arreglo de "crear_cuenta.html" para consistencia)
-        const usuariosRegistrados = [
-            { correo: 'usuario1@example.com', contraseña: 'password1', nombre: 'Juan Perez', fechaNacimiento: '1990-01-01', tipo: 'cliente' },
-            { correo: 'usuario2@example.com', contraseña: 'password2', nombre: 'Maria Lopez', fechaNacimiento: '1985-05-15', tipo: 'vendedor' }
-        ];
-
         function iniciarSesion() {
             const correo = document.getElementById('loginEmail').value.trim();
             const contraseña = document.getElementById('loginPassword').value;
-
-            const usuario = usuariosRegistrados.find(
-                u => u.correo === correo && u.contraseña === contraseña
-            );
-
-            if (!usuario) {
-                alert('No se encontró una cuenta asociada con esas credenciales.');
+    
+            if (!correo || !contraseña) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Campos vacíos',
+                    text: 'Por favor, completa todos los campos.'
+                });
                 return;
             }
-
-            // Redirigir según el tipo de usuario
-            if (usuario.tipo === 'cliente') {
-                window.location.href = 'inicio_cliente.html';
-            } else if (usuario.tipo === 'vendedor') {
-                window.location.href = 'inicio_vendedor.html';
-            }
-
-            
+    
+            fetch('http://localhost:3000/api/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ correo, contraseña }),
+                credentials: 'include'
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    localStorage.setItem('nombreUsuario', data.nombre);
+                    localStorage.setItem('tipoUsuario', data.tipo);
+                    localStorage.setItem('id', data.id);
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Bienvenido',
+                        text: data.nombre,
+                        showConfirmButton: false,
+                        timer: 1000
+                    }).then(() => {
+                        if(data.tipo == 'comprador')
+                            window.location.href = 'inicio_comprador.html';
+                        else{
+                            window.location.href = 'inicio_vendedor.html';
+                        }
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error de autenticación',
+                        text: data.message
+                    });
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error de conexión',
+                    text: 'No se pudo conectar con el servidor.'
+                });
+            });
         }
     </script>
 </body>

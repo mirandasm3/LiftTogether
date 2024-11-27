@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Página de Inicio del Vendedor</title>
+    <title>Inicio Vendedor</title>
     <link rel="stylesheet" href="stylesHome.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
-
     <header class="navbar">
         <a href="inicio_vendedor.html" class="logo">LiftTogether.com</a>
         <div class="search-bar">
@@ -22,11 +22,11 @@
             <button onclick="buscarProducto()">🔍</button>
         </div>
         
-        <a href="planes.html" class="premium"><i class="fas fa-crown"></i> Hazte Premium</a>
+        <a href="planes.html" class="premium"><span id="planLink"><i class="fas fa-crown"></i> Hazte Premium</span></a>
 
         <div class="user-options" id="userOptions">
-            <span>Hola <span id="userFirstName">Usuario</span></span>
-            <span>Cuenta</span>
+            <span>Hola <span id="userFirstName"></span></span>
+            <span id="accountText"></span>
             <div id="accountMenu" class="account-menu">
                 <a href="mi_cuenta_vendedor.html">Mi cuenta</a>
                 <a href="mis_productos.html">Mis productos</a>
@@ -35,7 +35,6 @@
         </div>
     </header>
 
-    </header>
     <div class="sub-navbar">
         <a href="vender.html">Vender</a>
         <a href="ayuda.html">Ayuda</a>
@@ -47,82 +46,93 @@
             <div class="carousel-container">
                 <button class="carousel-button prev">←</button>
                 <div class="carousel">
-                    <div class="carousel-item"><img src="product1.jpg" alt="Producto 1"></div>
-                    <div class="carousel-item"><img src="product2.jpg" alt="Producto 2"></div>
-                    <div class="carousel-item"><img src="product3.jpg" alt="Producto 3"></div>
-                    <div class="carousel-item"><img src="product4.jpg" alt="Producto 4"></div>
-                    <div class="carousel-item"><img src="product5.jpg" alt="Producto 5"></div>
-                    <div class="carousel-item"><img src="product6.jpg" alt="Producto 6"></div>
-                    <div class="carousel-item"><img src="product7.jpg" alt="Producto 7"></div>
-                    <div class="carousel-item"><img src="product8.jpg" alt="Producto 8"></div>
+                    <div class="carousel-item"><img src="" alt="Producto 1"></div>
+                    <div class="carousel-item"><img src="" alt="Producto 2"></div>
+                    <div class="carousel-item"><img src="" alt="Producto 3"></div>
+                    <div class="carousel-item"><img src="" alt="Producto 4"></div>
+                    <div class="carousel-item"><img src="" alt="Producto 5"></div>
+                    <div class="carousel-item"><img src="" alt="Producto 6"></div>
                 </div>
                 <button class="carousel-button next">→</button>
-            </div>
-            <a href="tus_productos.html" class="view-all">Ver todo</a>
-        </section>
-
-        <section class="stats-section">
-            <h2>Estadísticas de Ventas del Último Mes</h2>
-            <div class="stats-container">
-                <div class="stat-box">
-                    <h3>Total de Ventas</h3>
-                    <p id="total-sales">$15,000</p>
-                </div>
-                <div class="stat-box">
-                    <h3>Productos Vendidos</h3>
-                    <p id="products-sold">75</p>
-                </div>
-                <div class="stat-box">
-                    <h3>Clientes Nuevos</h3>
-                    <p id="new-customers">25</p>
-                </div>
             </div>
         </section>
     </main>
 
-    <script src="script.js"></script>
-
     <script>
-        const userOptions = document.getElementById("userOptions");
-        const accountMenu = document.getElementById("accountMenu");
+    document.addEventListener('DOMContentLoaded', () => {
+        obtenerInfoUsuario();
+    });
 
-        userOptions.addEventListener("mouseenter", function() {
+    function obtenerInfoUsuario() {
+        const userId = localStorage.getItem('id');
+        fetch(`http://localhost:3000/api/getUserInfo?userId=${userId}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.nombre) {
+                    document.getElementById("userFirstName").innerText = data.nombre;
+                    
+                    const accountText = document.getElementById("accountText");
+                    const planLink = document.getElementById("planLink");
+                    localStorage.setItem('suscripcion', data.suscripción);
+
+                    if (data.suscripción === 1) {
+                        accountText.innerText = 'Plan Básico';
+                        planLink.innerHTML = '<i class="fas fa-crown"></i> Hazte Premium';
+                    } else if (data.suscripción === 2) {
+                        accountText.innerText = 'Plan Avanzado';
+                        planLink.innerHTML = '<i class="fas fa-crown"></i> Hazte Premium';
+                    } else if (data.suscripción === 3) {
+                        accountText.innerText = 'Plan Premium';
+                        planLink.innerHTML = '<i class="fas fa-crown"></i> Planes';
+                    } else {
+                        accountText.innerText = 'Sin suscripción';
+                        planLink.innerHTML = '<i class="fas fa-crown"></i> Hazte Premium';
+                    }
+                } else {
+                    console.error('Error al obtener la información del usuario:', data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error al realizar la solicitud:', error);
+            });
+    }
+
+    const userOptions = document.getElementById("userOptions");
+    const accountMenu = document.getElementById("accountMenu");
+
+    userOptions.addEventListener("mouseenter", function() {
+        accountMenu.style.display = "block";
+    });
+
+    userOptions.addEventListener("mouseleave", function() {
+        accountMenu.style.display = "none";
+    });
+
+    userOptions.addEventListener("click", function() {
+        if (accountMenu.style.display === "none" || accountMenu.style.display === "") {
             accountMenu.style.display = "block";
-        });
-
-        userOptions.addEventListener("mouseleave", function() {
+        } else {
             accountMenu.style.display = "none";
-        });
-
-        // Si deseas que el menú también se despliegue con un clic
-        userOptions.addEventListener("click", function() {
-            if (accountMenu.style.display === "none" || accountMenu.style.display === "") {
-                accountMenu.style.display = "block";
-            } else {
-                accountMenu.style.display = "none";
-            }
-        });
-
-        function buscarProducto() {
-            const searchInput = document.getElementById('searchInput').value.trim();
-            const category = document.getElementById('categoriesDropdown').value;
-            if (searchInput) {
-                alert(`Buscando "${searchInput}" en categoría "${category || 'todas'}"...`);
-            }
         }
+    });
 
-        function cerrarSesion() {
-            alert('Sesión cerrada');
-            window.location.href = 'index.html';
+    function buscarProducto() {
+        const searchInput = document.getElementById('searchInput').value.trim();
+        const category = document.getElementById('categoriesDropdown').value;
+        if (searchInput) {
+            alert(`Buscando "${searchInput}" en categoría "${category || 'todas'}"...`);
         }
+    }
 
-        // Obtén solo el primer nombre del usuario
-        
-        document.getElementById("userFirstName").textContent = fullName.split(" ")[0];
+    function cerrarSesion() {
+        localStorage.clear();
+        window.location.href = 'index.html';
+    }
 
-        document.getElementById('sellButton').addEventListener('click', function() {
-            window.location.href = 'vender.html';
-        });
+    document.getElementById('sellButton').addEventListener('click', function() {
+        window.location.href = 'vender.html';
+    });
+
     </script>
 </body>
 </html>

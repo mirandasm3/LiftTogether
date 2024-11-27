@@ -6,6 +6,7 @@
     <title>Página de Inicio del Vendedor</title>
     <link rel="stylesheet" href="stylesHome.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
     <!-- Barra de navegación superior -->
@@ -22,19 +23,15 @@
             <button onclick="buscarProducto()">🔍</button>
         </div>
 
-        <a href="planes.html" class="premium"><i class="fas fa-crown"></i> Hazte Premium</a>
-
-        <div class="user-options" onmouseover="mostrarMenuCuenta()" onmouseout="ocultarMenuCuenta()">
-            <span>Hola <span id="userFirstName">Usuario</span></span>
-            <span>Cuenta</span>
+        <div class="user-options" id="userOptions">
+            <span>Hola <span id="userFirstName"></span></span>
+            <span id="accountText">Plan</span>
             <div id="accountMenu" class="account-menu">
                 <a href="mi_cuenta_vendedor.html">Mi cuenta</a>
                 <a href="mis_productos.html">Mis productos</a>
                 <a href="index.html" onclick="cerrarSesion()">Cerrar sesión</a>
             </div>
         </div>
-    </header>
-        
     </header>
 
     <!-- Barra de navegación inferior -->
@@ -55,7 +52,7 @@
                     <li>Estadísticas básicas de visitas a los productos.</li>
                     <li>Sin herramientas de promoción.</li>
                 </ul>
-                <button>Plan actual</button>
+                <button id="planBasicoBtn" onclick="seleccionarPlan(1)">Cambiar Plan</button>
             </div>
             <div class="plan-card">
                 <h3>Plan avanzado</h3>
@@ -66,7 +63,7 @@
                     <li>Estadísticas avanzadas de visitas y conversiones.</li>
                     <li>Soporte prioritario.</li>
                 </ul>
-                <button onclick="confirmarMejora()">Mejorar Plan</button>
+                <button id="planAvanzadoBtn" onclick="seleccionarPlan(2)">Cambiar Plan</button>
             </div>
             <div class="plan-card">
                 <h3>Plan premium</h3>
@@ -78,33 +75,82 @@
                     <li>Acceso completo a herramientas de promoción.</li>
                     <li>Asesoría personalizada de ventas.</li>
                 </ul>
-                <button onclick="confirmarMejora()">Mejorar Plan</button>
+                <button id="planPremiumBtn" onclick="seleccionarPlan(3)">Cambiar Plan</button>
             </div>
         </div>
     </main>
 
     <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            
+            const userName = localStorage.getItem('nombreUsuario');
+            const userPlan = localStorage.getItem('suscripcion');
+
+
+            if (userName) {
+                document.getElementById("userFirstName").textContent = userName;
+
+            } else {
+                console.log("No se encontró el nombre del usuario.");
+            }
+
+            if (userPlan) {
+                const accountText = document.getElementById("accountText");
+                if (userPlan == 1) {
+                    document.getElementById('planBasicoBtn').innerText = 'Plan actual';
+                    document.getElementById('planBasicoBtn').disabled = true;
+                    document.getElementById('planBasicoBtn').style.backgroundColor = 'green';
+                    accountText.innerText = 'Plan Básico';
+                } else if (userPlan == 2) {
+                    document.getElementById('planAvanzadoBtn').innerText = 'Plan actual';
+                    document.getElementById('planAvanzadoBtn').disabled = true;
+                    document.getElementById('planAvanzadoBtn').style.backgroundColor = 'green';
+                    accountText.innerText = 'Plan Avanzado';
+                } else if (userPlan == 3) {
+                    document.getElementById('planPremiumBtn').innerText = 'Plan actual';
+                    document.getElementById('planPremiumBtn').disabled = true;
+                    document.getElementById('planPremiumBtn').style.backgroundColor = 'green';
+                    accountText.innerText = 'Plan Premium';
+                }
+            } else {
+                console.log("No se encontró el plan del usuario.");
+            }
+        });
+
         function toggleMenuCuenta() {
             const menu = document.getElementById('accountMenu');
             menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
         }
 
-        function confirmarMejora() {
-            if (confirm("¿Está seguro de que desea mejorar su plan?")) {
-                window.location.href = "pagar_plan.html";
-            }
+        function seleccionarPlan(plan) {
+            localStorage.setItem('planNuevo', plan);
+            window.location.href = `pagar_plan.html?plan=${plan}`;
         }
 
         function cerrarSesion() {
-            alert('Sesión cerrada');
             window.location.href = 'index.html';
+            localStorage.clear();
         }
 
-        document.addEventListener('DOMContentLoaded', function() {
-            // Obtén solo el primer nombre del usuario
-            const fullName = "Isabella Gomez"; // Reemplaza con el valor dinámico
-            document.getElementById("userFirstName").textContent = fullName.split(" ")[0];
+        const userOptions = document.getElementById("userOptions");
+        const accountMenu = document.getElementById("accountMenu");
+
+        userOptions.addEventListener("mouseenter", function() {
+            accountMenu.style.display = "block";
         });
+
+        userOptions.addEventListener("mouseleave", function() {
+            accountMenu.style.display = "none";
+        });
+
+        userOptions.addEventListener("click", function() {
+            if (accountMenu.style.display === "none" || accountMenu.style.display === "") {
+                accountMenu.style.display = "block";
+            } else {
+                accountMenu.style.display = "none";
+            }
+        });
+        
     </script>
 </body>
 </html>

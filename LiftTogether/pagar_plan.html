@@ -7,6 +7,7 @@
     <title>Página de Inicio del Vendedor</title>
     <link rel="stylesheet" href="stylesHome.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
     <!-- Barra de navegación superior -->
@@ -25,9 +26,9 @@
 
         <a href="planes.html" class="premium"><i class="fas fa-crown"></i> Hazte Premium</a>
 
-        <div class="user-options" onmouseover="mostrarMenuCuenta()" onmouseout="ocultarMenuCuenta()">
-            <span>Hola <span id="userFirstName">Usuario</span></span>
-            <span>Cuenta</span>
+        <div class="user-options" id="userOptions">
+            <span>Hola <span id="userFirstName"></span></span>
+            <span id="accountText">Plan</span>
             <div id="accountMenu" class="account-menu">
                 <a href="mi_cuenta_vendedor.html">Mi cuenta</a>
                 <a href="mis_productos.html">Mis productos</a>
@@ -42,67 +43,96 @@
 
     <!-- Sección de pago -->
     <main>
-        <div class="payment-container">
-            <h2>Paga en un punto de pago OXXO para asegurar tu stock</h2>
-            <p>Muestra el código de barras al pagar o menciona estos datos</p>
-            <div class="barcode">
-                <svg id="barcode"></svg>
+        <div class="payment-container" id="paymentContainer">
+            <h2 id="paymentMessage">Paga en un punto de pago OXXO para asegurar tu stock</h2>
+            <div id="paymentInfo">
+                <p>Muestra el código de barras al pagar o menciona estos datos</p>
+                <div class="barcode">
+                    <svg id="barcode"></svg>
+                </div>
+                <p>Tipo de pago: Servicios de Mercado Libre</p>
+                <p>Código de pago: <span id="codigoPago">123456789012</span></p>
+                <p>Monto a pagar: $<span id="amount">20</span></p>
             </div>
-            <p>Tipo de pago: Servicios de Mercado Libre</p>
-            <p>Código de pago: <span id="codigoPago">123456789012</span></p>
-            <p>Monto a pagar: $20</p>
-            <button onclick="descargarDatos()">Descargar estos datos</button>
+            <button id="buttonOk" onclick="descargarDatos()">Descargar estos datos</button>
         </div>
-        
     </main>
 
     <script>
-        function toggleMenuCuenta() {
-            const menu = document.getElementById('accountMenu');
-            menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
-        }
 
-        function cerrarSesion() {
-            alert('Sesión cerrada');
-            window.location.href = 'index.html';
-        }
-
-        function descargarCodigo() {
-            alert("Datos de pago descargados.");
-            // Aquí se puede implementar la descarga del archivo o imagen del código de barras
-        }
-    </script>
-    
-    <script>
-        // Genera un código de pago aleatorio
         function generarCodigoPago() {
-            // Genera un número aleatorio de 12 dígitos
-            return Math.floor(Math.random() * 1000000000000); // Número de 12 dígitos
+            return Math.floor(Math.random() * 1000000000000); 
         }
 
-        // Genera el código de barras cuando la página carga
         document.addEventListener("DOMContentLoaded", function () {
-            // Generar código de pago aleatorio
+
+            const userName = localStorage.getItem('nombreUsuario');
+            const userPlan = localStorage.getItem('suscripcion');
+            const planNuevo = localStorage.getItem('planNuevo');
+            const userId = localStorage.getItem('id');  
+            const paymentContainer = document.getElementById("paymentContainer");
+            const paymentInfo = document.getElementById("paymentInfo");
+            const paymentMessage = document.getElementById("paymentMessage");
+            const amountElement = document.getElementById("amount");
+            const buttonOk = document.getElementById("buttonOk");
             const codigoPago = generarCodigoPago();
-            document.getElementById("codigoPago").innerText = codigoPago;  // Actualiza el código de pago en el HTML
-    
-            // Genera el código de barras en el elemento <svg> con id="barcode"
-            JsBarcode("#barcode", codigoPago, {
-                format: "CODE128",
-                lineColor: "#000",
-                width: 2,
-                height: 80,
-                displayValue: true
-            });
+            document.getElementById("codigoPago").innerText = codigoPago;
+
+            if (userName) {
+                document.getElementById("userFirstName").textContent = userName;
+            }
+
+            if (userPlan) {
+                const accountText = document.getElementById("accountText");
+                if (userPlan == 1) {
+                    accountText.innerText = 'Plan Básico';
+                } else if (userPlan == 2) {
+                    accountText.innerText = 'Plan Avanzado';
+                } else if (userPlan == 3) {
+                    accountText.innerText = 'Plan Premium';
+                }
+            } else {
+                console.log("No se encontró el plan del usuario.");
+            }
+
+            if (planNuevo === '1') {
+                paymentMessage.innerText = "¿Estás seguro que deseas cambiar al plan gratuito?";
+                amountElement.innerText = "0"; 
+                paymentInfo.hidden = true;
+                buttonOk.innerText = "Cambiar al plan gratuito";
+            }
+
+            else if (planNuevo === '2') {
+                amountElement.innerText = "20";
+                JsBarcode("#barcode", codigoPago, {
+                    format: "CODE128",
+                    lineColor: "#000",
+                    width: 2,
+                    height: 80,
+                    displayValue: true
+                });
+            }
+
+            else if (planNuevo === '3') {
+                amountElement.innerText = "50";
+                JsBarcode("#barcode", codigoPago, {
+                    format: "CODE128",
+                    lineColor: "#000",
+                    width: 2,
+                    height: 80,
+                    displayValue: true
+                });
+            }
         });
-    
-        // Función para descargar los datos en formato de texto
+
+
         function descargarDatos() {
             const codigo = document.getElementById("codigoPago").innerText;
+            const monto = document.getElementById("amount").innerText;
             const datos = ` 
                 Tipo de pago: Servicios de Mercado Libre
                 Código de pago: ${codigo}
-                Monto a pagar: $20
+                Monto a pagar: $${monto}
             `;
             const blob = new Blob([datos], { type: 'text/plain' });
             const url = URL.createObjectURL(blob);
@@ -111,7 +141,69 @@
             a.download = "datos_pago.txt";
             a.click();
             URL.revokeObjectURL(url);
+            confirmarCompra();
         }
+
+        function confirmarCompra() {
+            const planNuevo = localStorage.getItem('planNuevo');
+            const userId = localStorage.getItem('id'); 
+
+            if (!planNuevo || !userId) {
+                alert('Datos insuficientes para realizar la actualización.');
+                return;
+            }
+
+            fetch('http://localhost:3000/api/updatePlan', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json' },
+                body: JSON.stringify({ plan: planNuevo, userId: userId })
+            })
+            .then(response => {
+                if(response.ok) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Operación exitosa',
+                        text: 'Plan actualizado con éxito.',
+                        showConfirmButton: false,
+                        timer: 1500
+                    }).then(() => {
+                        window.location.href = 'inicio_vendedor.html';
+                    });
+                } else {
+                    return response.json().then(data => {
+                        throw new Error(data.message || 'Error al actualizar el plan.');
+                    });
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error al actualizar el plan: ' + error.message);
+            });
+        }
+
+        function cerrarSesion() {
+            window.location.href = 'index.html';
+            localStorage.clear();
+        }
+
+        const userOptions = document.getElementById("userOptions");
+        const accountMenu = document.getElementById("accountMenu");
+
+        userOptions.addEventListener("mouseenter", function() {
+            accountMenu.style.display = "block";
+        });
+
+        userOptions.addEventListener("mouseleave", function() {
+            accountMenu.style.display = "none";
+        });
+
+        userOptions.addEventListener("click", function() {
+            if (accountMenu.style.display === "none" || accountMenu.style.display === "") {
+                accountMenu.style.display = "block";
+            } else {
+                accountMenu.style.display = "none";
+            }
+        });
     </script>
     
 </body>

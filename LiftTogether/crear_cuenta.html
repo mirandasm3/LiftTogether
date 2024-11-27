@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LiftTogether - Crear Cuenta</title>
     <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
     <div class="login-container">
@@ -68,32 +69,56 @@
             const tipoUsuario = document.getElementById('userType').value;
 
             if (!correo || !nombreCompleto || !fechaNacimiento || !contraseña || !confirmarContraseña || !tipoUsuario) {
-                alert('Campos faltantes y/o incorrectos');
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Campos faltantes y/o incorrectos',
+                    text: 'Por favor, completa todos los campos.'
+                });
                 return;
             }
 
             if (!esCorreoValido(correo)) {
-                alert('Por favor, ingresa un correo electrónico válido.');
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Correo inválido',
+                    text: 'Por favor, ingresa un correo electrónico válido.'
+                });
                 return;
             }
 
             if (usuariosRegistrados.some(usuario => usuario.correo === correo)) {
-                alert('Este correo ya está asociado a otra cuenta.');
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Correo duplicado',
+                    text: 'Este correo ya está asociado a otra cuenta.'
+                });
                 return;
             }
 
             if (!esContrasenaSegura(contraseña)) {
-                alert('La contraseña debe tener al menos 8 caracteres, una letra mayúscula, y un carácter especial.');
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Contraseña insegura',
+                    text: 'La contraseña debe tener al menos 8 caracteres, una letra mayúscula, y un carácter especial.'
+                });
                 return;
             }
 
             if (contraseña !== confirmarContraseña) {
-                alert('Las contraseñas no coinciden.');
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Contraseñas no coinciden',
+                    text: 'Las contraseñas no coinciden.'
+                });
                 return;
             }
 
             if (esMayorDeEdad(fechaNacimiento) < 18) {
-                alert('Debes ser mayor de edad para crear una cuenta.');
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Edad insuficiente',
+                    text: 'Debes ser mayor de edad para crear una cuenta.'
+                });
                 return;
             }
 
@@ -109,14 +134,30 @@
                 })
             })
             .then(response => {
-                if(response.ok) {
-                    alert('Cuenta creada con éxito.');
+            if(response.ok) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Cuenta creada con éxito',
+                    text: 'Serás redirigido a la página de inicio.',
+                    timer: 2000,
+                    showConfirmButton: false
+                }).then(() => {
                     window.location.href = 'index.html';
-                }
+                });
+            } else {
+                return response.json().then(data => {
+                    throw new Error(data.message || 'Error al crear la cuenta.');
+                });
+            }
             })
-            .catch(error => console.error('Error:', error));
-
-            //Aqui es donde si ya hace los cambios con la base de datos, pero no sale el mensaje de confirmación
+            .catch(error => {
+                console.error('Error:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error al crear la cuenta',
+                    text: error.message
+                });
+            });
         }
     </script>
 </body>
